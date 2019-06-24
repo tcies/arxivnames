@@ -10,27 +10,23 @@ sys.excepthook = ultratb.FormattedTB(
 color_scheme='Linux', call_pdb=1)
 
 
-with open('results.xml') as fd:
-    doc = xmltodict.parse(fd.read())
 
 things = []  
-for entry in doc['feed']['entry']:
-   if 'name' in entry['author']:
-     authors = entry['author']['name']
-   else:
-     authors = [i['name'] for i in entry['author']]
-   things.append(authors)
 
-with open('authors.json', 'w') as fd:
-   fd.write(json.dumps(things))
 
-f = open('authors.txt', 'w')
-for au in things:
-    if type(au) == unicode:
-        au = [au]
-    for aaa in au:
-        f.write('%s, ' % aaa.encode('utf-8'))
-    f.write('\n')
+for i in range(100):
+  with open('results/%03d.xml' % i) as fd:
+      doc = xmltodict.parse(fd.read())
+
+  if 'entry' not in doc['feed']:
+    continue
+
+  for entry in doc['feed']['entry']:
+     if 'name' in entry['author']:
+       authors = entry['author']['name']
+     else:
+       authors = [i['name'] for i in entry['author']]
+     things.append(authors)
 
 # Column thingy
 f = open('oneauth.csv', 'w')
@@ -40,7 +36,7 @@ for index, authors in enumerate(things):
         authors = [authors]
     initials = False
     for author in authors:
-        if author[1] == '.':
+        if len(author) < 2 or author[1] == '.':
             initials = True
     if initials:
         continue
