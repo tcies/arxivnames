@@ -32,4 +32,21 @@ for au in things:
         f.write('%s, ' % aaa.encode('utf-8'))
     f.write('\n')
 
-IPython.embed()
+# Column thingy
+f = open('oneauth.csv', 'w')
+fi = open('indices.txt', 'w')
+for index, authors in enumerate(things):
+    if type(authors) == unicode:
+        authors = [authors]
+    initials = False
+    for author in authors:
+        if author[1] == '.':
+            initials = True
+    if initials:
+        continue
+    for author in authors:
+        names = author.split(' ')
+        f.write('%s\n' % names[0].encode('utf-8'))
+        fi.write('%d\n' % index)
+
+# IPython.embed()
