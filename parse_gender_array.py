@@ -1,3 +1,7 @@
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
+
 import IPython
 from IPython.core import ultratb
 import sys
@@ -38,4 +42,34 @@ for index, g in zip(indices, gs):
 reslist = [r[1] for r in result.iteritems()]
 final = [r for r in reslist if -1 not in r]
 
-IPython.embed()
+
+aucs = [len(r) for r in final]
+gss = [[], [], [], [], [], [], [], [], [], []]
+counts = np.zeros(9)
+
+for auc, gs in zip(aucs, final):
+  if auc < 10:
+    gss[auc] = gss[auc] + gs
+    counts[auc-1] = counts[auc-1] + len(gs)
+
+ratios = [np.mean(np.array(g)) for g in gss]
+
+fig, w = plt.subplots()
+w.plot(range(10), ratios, 'r-x') #x,y
+# w.plot(range(10), -np.array(ratios) + 1) #x,y
+
+w.set(xlabel='Number of authors per Paper', ylabel='Ratio of female names',
+       title='Correlation Between Gender and Collaborations', ylim=[0, 0.3])
+w.grid()
+
+v = w.twinx()
+
+v.stem(np.array(range(9)) + 1, counts, color='red', basefmt='')
+v.set(ylabel='Author count', yscale='log')
+
+plt.tight_layout()
+fig.savefig("plot.pdf")
+fig.savefig("plot.png")
+# plt.show()
+
+# IPython.embed()
