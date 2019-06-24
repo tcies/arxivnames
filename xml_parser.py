@@ -49,4 +49,4 @@ for index, authors in enumerate(things):
         f.write('%s\n' % names[0].encode('utf-8'))
         fi.write('%d\n' % index)
 
-# IPython.embed()
+IPython.embed()
