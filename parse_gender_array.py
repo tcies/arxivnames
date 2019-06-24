@@ -54,6 +54,8 @@ for auc, gs in zip(aucs, final):
 
 ratios = [np.mean(np.array(g)) for g in gss]
 
+IPython.embed()
+
 fig, w = plt.subplots()
 w.plot(range(10), ratios, 'r-x') #x,y
 # w.plot(range(10), -np.array(ratios) + 1) #x,y
