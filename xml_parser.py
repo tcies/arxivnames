@@ -1,3 +1,4 @@
+import IPython
 # import ipdb; ipdb.set_trace()
 import json
 import xmltodict
@@ -14,11 +15,13 @@ with open('results.xml') as fd:
 
 things = []  
 for entry in doc['feed']['entry']:
-   if len(entry['author']) > 1:
-     authors = [i['name'] for i in entry['author']]
-   else:
+   if 'name' in entry['author']:
      authors = entry['author']['name']
+   else:
+     authors = [i['name'] for i in entry['author']]
    things.append(authors)
 
 with open('authors.json', 'w') as fd:
    fd.write(json.dumps(things))
+
+IPython.embed()
