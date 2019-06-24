@@ -24,4 +24,12 @@ for entry in doc['feed']['entry']:
 with open('authors.json', 'w') as fd:
    fd.write(json.dumps(things))
 
+f = open('authors.txt', 'w')
+for au in things:
+    if type(au) == unicode:
+        au = [au]
+    for aaa in au:
+        f.write('%s, ' % aaa.encode('utf-8'))
+    f.write('\n')
+
 IPython.embed()
